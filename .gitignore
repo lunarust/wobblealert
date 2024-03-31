@@ -1,0 +1,5 @@
+/target
+/dist
+/template
+/src/config/Default.toml
+Cargo.lock
