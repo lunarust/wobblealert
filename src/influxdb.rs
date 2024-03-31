@@ -1,13 +1,9 @@
-//use std::time::{SystemTime};
 use futures::prelude::*;
-//use influxdb2::models::{DataPoint, Query};
+use chrono::{DateTime, FixedOffset};
+use chrono::prelude::*;
 use influxdb2::models::Query;
 use influxdb2::{Client, FromDataPoint};
 use influxdb2_derive::WriteDataPoint;
-//use chrono::prelude::*;
-//use crate::error;
-use chrono::{DateTime, FixedOffset};
-use chrono::prelude::*;
 
 #[derive(Debug, Clone)]
 pub struct Influxdb {
@@ -62,7 +58,6 @@ impl Default for LastEntry {
     fn default() -> Self {
         Self {
             code: "".to_string(),
-            //time: chrono::MIN_DATETIME.with_timezone(&chrono::FixedOffset::east(7 * 3600)),
             time: FixedOffset::west_opt(0).unwrap().with_ymd_and_hms(2024, 01, 01, 0, 0, 0).unwrap(),
             result: 1,
         }
@@ -101,17 +96,8 @@ impl Influxdb {
 			iterator = (res).iter().last().unwrap().clone();
 	    }
 
-	    	println!("this one:: {:?}", res.len());
-	    //self.candle_series.last().unwrap_or(&Candle::default())
-//	    let mut iterator = (res).iter().last().unwrap();
-
 	    iterator.time
-		//let mut iterator = (res).iter().next().unwrap_or(&LastEntry::default());
-		//let mut iterator = (res).iter().next().unwrap();
-    	//println!("iterator.time {}", iterator.time);
-	    //iterator.time
 
-	    //chrono::MIN_DATETIME.with_timezone(&chrono::FixedOffset::east(7 * 3600))
 	}
 	pub async fn dump_report(&self, le: Vec<LastReport>) -> Result<(), Box<dyn std::error::Error>>  {
 

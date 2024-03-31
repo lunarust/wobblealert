@@ -39,8 +39,7 @@ async fn main() {
 }
 
 async fn engage(myfile: &str, long: f64, lat: f64, rad: i32, stdate: String) -> Result<(), Box<dyn std::error::Error>> {
-    //downlaoded a bigger set of data 
-    //let mut stdate = (Utc::now() + Duration::minutes(-262800)).format("%Y-%m-%dT%H:%M:00");
+
     let eddate = (Utc::now()).format("%Y-%m-%dT%H:%M:00");
 
     println!("Engaging with {} to {}", stdate, eddate);
