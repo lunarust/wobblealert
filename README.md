@@ -62,6 +62,15 @@ pub struct Quake {
     pub time: i64,  
 }
 ```
+
+```bash
+curl --request POST 'http://192.168.1.1:8086/api/v2/query?org=org.local' \
+--header 'Content-Type: application/vnd.flux' \
+--header 'Accept: application/json' \
+--header "Authorization: Token APITOKEN" \
+--data 'from(bucket: "wobbly") |> range(start: 0) |> filter(fn: (r) => r._measurement == "quake")'
+
+```
 |  _time  |  _value  |  _field  |  _measurement  |  alert  | code  |  url  |
 |---------|----------|----------|----------------|---------|-------|-------|
 |2023-10-13T03:33:14.082Z|10|depth|quake|green|6000lf9u|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lf9u|
@@ -71,7 +80,7 @@ pub struct Quake {
 |2023-10-13T03:33:14.082Z|4.40000009536743|magnitude|quake|green|6000lf9u|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lf9u|
 |2023-10-11T18:45:41.506Z|41.122|depth|quake|green|6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
 |2023-10-11T18:45:41.506Z|211.05327|distance|quake|green|6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
-|2023-10-11T18:45:41.506Z|39.1017|latitude|quake green|6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
+|2023-10-11T18:45:41.506Z|39.1017|latitude|quake|green|6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
 |2023-10-11T18:45:41.506Z|21.3788|longitude|quake|green|6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
 |2023-10-11T18:45:41.506Z|4.30000019073486|magnitude|quake|green|6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
 |
