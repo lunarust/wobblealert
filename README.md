@@ -40,12 +40,42 @@ cargo run
 ### InfluxDB 
 
 Data stored as:
+```rust
+pub struct Quake {
+  #[influxdb(tag)]
+  pub url: String,
+  #[influxdb(tag)]
+  pub alert: String,
+  #[influxdb(tag)]
+  pub code: String,
+  #[influxdb(field)]
+  pub magnitude: f64,
+  #[influxdb(field)]
+  pub distance: f64,
+  #[influxdb(field)]
+  pub longitude: f64,
+  #[influxdb(field)]
+  pub latitude: f64,
+  #[influxdb(field)]
+  pub depth: f64,
+    #[influxdb(timestamp)]
+    pub time: i64,  
+}
+```
+|  _time  |  _value  |  _field  |  _measurement  |  alert  | code  |  url  |
+|---------|----------|----------|----------------|---------|-------|-------|
+|2023-10-13T03:33:14.082Z|10|depth quake green 6000lf9u|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lf9u|
+|2023-10-13T03:33:14.082Z|122.415017|distance|quake green 6000lf9u|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lf9u|
+|2023-10-13T03:33:14.082Z|37.851|latitude|quake green 6000lf9u|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lf9u|
+|2023-10-13T03:33:14.082Z|24.1553 longitude quake green 6000lf9u|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lf9u|
+|2023-10-13T03:33:14.082Z|4.40000009536743|magnitude quake green 6000lf9u|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lf9u|
+|2023-10-11T18:45:41.506Z|41.122|depth quake green 6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
+|2023-10-11T18:45:41.506Z|211.05327 distance|quake green 6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
+|2023-10-11T18:45:41.506Z|39.1017 latitude|quake green 6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
+|2023-10-11T18:45:41.506Z|21.3788 longitude quake green 6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
+|2023-10-11T18:45:41.506Z|4.30000019073486|magnitude quake green 6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
+|
 
-| result|table  |_start |_stop  |_time  |_value |_field |_measurement|alert|code|url|
-|-------|-------|-------|-------|-------|-------|-------|------------|-----|----|----|
-|_result|0|1970-01-01T00:00:00Z|2024-04-01T09:49:10.374737174Z|2023-10-13T03:33:14.082Z|10|depth|quake|green|6000lf9u|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lf9u |
-|_result|1|1970-01-01T00:00:00Z|2024-04-01T09:49:10.374737174Z|2023-10-13T03:33:14.082Z|122.415017|distance|quake|green|6000lf9u|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lf9u |
-|_result|2|1970-01-01T00:00:00Z|2024-04-01T09:49:10.374737174Z|2023-10-13T03:33:14.082Z|37.851|latitude|quake|green|6000lf9u|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lf9u |
 
 
 ### Grafana
