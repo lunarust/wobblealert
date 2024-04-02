@@ -8,6 +8,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use crate::influxdb;
 use crate::settings;
+use crate::generic;
 
 const RESTURL: &str = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
 
@@ -57,7 +58,6 @@ struct Properties {
 }
 
 pub async fn handle_call(stdt: String, endt: String, lg: f64, lt: f64, rd: i32, output_file: &str, cfg: settings::Settings) ->  Result<()> {
-	println!("Entered async function in earthquake");
 	//testing set
 	//let dd = r#"{"type":"FeatureCollection","metadata":{"generated":1711715671000,"url":"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-03-29T07:02:19&endtime=2024-03-29T10:22:19&latitude=37.57086135710454&longitude=22.80949188170508&maxradiuskm=320","title":"USGS Earthquakes","status":200,"api":"1.14.0","count":2},"features":[{"type":"Feature","properties":{"mag":5.8,"place":"30 km NW of Filiatrá, Greece","time":1711696367809,"updated":1711714445186,"tz":null,"url":"https://earthquake.usgs.gov/earthquakes/eventpage/us7000m8q9","detail":"https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us7000m8q9&format=geojson","felt":23,"cdi":7,"mmi":5.065,"alert":"green","status":"reviewed","tsunami":0,"sig":534,"net":"us","code":"7000m8q9","ids":",us7000m8q9,usauto7000m8q9,pt24089000,","sources":",us,usauto,pt,","types":",dyfi,internal-moment-tensor,internal-origin,losspager,moment-tensor,origin,phase-data,shakemap,","nst":127,"dmin":0.509,"rms":1.14,"gap":32,"magType":"mww","type":"earthquake","title":"M 5.8 - 30 km NW of Filiatrá, Greece"},"geometry":{"type":"Point","coordinates":[21.3156,37.3286,25.489]},"id":"us7000m8q9"},{"type":"Feature","properties":{"mag":4.1,"place":"29 km WNW of Filiatrá, Greece","time":1711696314868,"updated":1711699088040,"tz":null,"url":"https://earthquake.usgs.gov/earthquakes/eventpage/us7000m8qa","detail":"https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us7000m8qa&format=geojson","felt":null,"cdi":null,"mmi":null,"alert":null,"status":"reviewed","tsunami":0,"sig":259,"net":"us","code":"7000m8qa","ids":",us7000m8qa,","sources":",us,","types":",origin,phase-data,","nst":23,"dmin":0.526,"rms":1.04,"gap":205,"magType":"mb","type":"earthquake","title":"M 4.1 - 29 km WNW of Filiatrá, Greece"},"geometry":{"type":"Point","coordinates":[21.2747,37.2621,43.961]},"id":"us7000m8qa"}],"bbox":[21.2747,37.2621,25.489,21.3156,37.3286,43.961]}"#;
 	//let dd = r#"{"type":"FeatureCollection","metadata":{"generated":1711715671000,"url":"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2024-03-29T07:02:19&endtime=2024-03-29T10:22:19&latitude=37.57086135710454&longitude=22.80949188170508&maxradiuskm=320","title":"USGS Earthquakes","status":200,"api":"1.14.0","count":2},"features":[]}"#;
@@ -66,11 +66,7 @@ pub async fn handle_call(stdt: String, endt: String, lg: f64, lt: f64, rd: i32, 
 	let res = run_call(stdt, endt, lg, lt, rd).await;
 
 	let mut update_event: String = "".to_string();
-    let mut file_ref = OpenOptions::new()
-        .write(true)
-        .append(true)
-    	.open(output_file)
-    	.expect("Unable to open file");
+
 	let mut index: i32 = 0;
 
     let inflx = influxdb::Influxdb {
@@ -137,7 +133,7 @@ pub async fn handle_call(stdt: String, endt: String, lg: f64, lt: f64, rd: i32, 
 	    	.expect("Unable to write file");
 
 		// Updating check file timestamp 
-		file_ref.write_all(update_event.as_bytes()).expect("write failed");
+		//file_ref.write_all(update_event.as_bytes()).expect("write failed");
 
 		let duration_since_epoch = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap();
 		let timestamp_nanos = duration_since_epoch.as_nanos(); // u128
@@ -149,11 +145,13 @@ pub async fn handle_call(stdt: String, endt: String, lg: f64, lt: f64, rd: i32, 
 		};
 		report_list.push(rep);
 		let _ = influxdb::Influxdb::dump_report(&inflx.clone(), report_list).await;
+	    generic::logthis(format!("Event recorded: M:{} D:{}", iterator.magnitude, iterator.distance).as_str(), "ALERT")
+
 	}
 
 	// pushing data to influxdb
 	let res = influxdb::Influxdb::dump(&inflx.clone(), quake_list).await;
-	println!("Pushing data... {:?}", res);
+	//println!("Pushing data... {:?}", res);
 
 
 	Ok(())

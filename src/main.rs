@@ -16,7 +16,9 @@ lazy_static! {
 
 #[tokio::main]
 async fn main() {
-    println!("Good day ▼(´ᴥ`)▼");
+    generic::logthis(format!("Good day ▼(´ᴥ`)▼ ").as_str(), "INFO");
+
+    //println!("Good day ▼(´ᴥ`)▼");
 
     let influxdb = influxdb::Influxdb {
         dburl: CONFIG.db.dburl.clone(),
@@ -32,7 +34,7 @@ async fn main() {
     let file = CONFIG.location.file.clone();            
 
     let last_entry: DateTime<FixedOffset> = influxdb::Influxdb::check_connection(&influxdb).await;
-    println!("{:?}", last_entry.format("%Y-%m-%dT%H:%M:%S").to_string());
+    //println!("{:?}", last_entry.format("%Y-%m-%dT%H:%M:%S").to_string());
 
     engage(file.as_str(), lg, lt, rd, last_entry.format("%Y-%m-%dT%H:%M:%S").to_string()).await.map_err(|err| println!("{:?}", err)).ok();
 
@@ -42,7 +44,8 @@ async fn engage(myfile: &str, long: f64, lat: f64, rad: i32, stdate: String) -> 
 
     let eddate = (Utc::now()).format("%Y-%m-%dT%H:%M:00");
 
-    println!("Engaging with {} to {}", stdate, eddate);
+    //println!("Engaging with {} to {}", stdate, eddate);
+    generic::logthis(format!("Engaging for date: {} {}", stdate, eddate).as_str(), "INFO");
 
     earthquake::handle_call(stdate.to_string(), eddate.to_string(), long, lat, rad, myfile, CONFIG.clone())
         .await

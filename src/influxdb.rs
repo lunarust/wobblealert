@@ -89,10 +89,10 @@ impl Influxdb {
 	    let mut iterator = LastEntry::default();
 
 	    if res.len() == 0 {
-	    	println!("Set is empty:: {:?}", res.len());	    	
+	    	//println!("Set is empty:: {:?}", res.len());	    	
 	    }	
 	    else {
-	    	println!("I have an entry:: {:?}", res.len());
+	    	//println!("I have an entry:: {:?}", res.len());
 			iterator = (res).iter().last().unwrap().clone();
 	    }
 
@@ -119,7 +119,7 @@ impl Influxdb {
 	    let token = &self.dbapi;
 	    let bucket = &self.dbname;
 	    let client = Client::new(host, org, token);
-	    println!("{:?} > {:?}", qu.len(), qu);
+	    //println!("{:?} > {:?}", qu.len(), qu);
 
 	    client.write(bucket, stream::iter(qu)).await?;
 	    
