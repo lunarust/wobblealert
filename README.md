@@ -111,6 +111,51 @@ read_file wobblealert {
 }
 ```
 
+
+### Zabbix & Telegram
+/var/log/scripts/wobblealert
+
+Create a Bot
+https://core.telegram.org/bots/tutorial
+BotFather will give you the ID upon creation.
+
+Add your bot to a channel or group, your bot must have admin access.
+
+Get your group id:
+https://api.telegram.org/bot<TOKEN>/getUpdates
+
+
+In Zabbix
+> Data Collection > Templates
+Create a new Template and Template group to easily identify your custom rules
+Create an application and a trigger (with older version you need to create a graph as well)
+Assign the template to your host.
+
+> alert > media Type: 
+Enable Telegram
+Edit the entry and add your bot token
+
+> Users > Users:
+Create or edit an existing User, create an entry in tab Media for Telegram, with the ID of your channel.
+
+> Alerts > Actions > Trigger action:
+Create an action for your Telegram alert with all the required filter.
+
+
+A default alert looks as follow:
+```text
+Problem: Wobble
+Problem started at 11:54:26 on 2024.04.02
+Problem name: Wobble
+Host: Gumbys
+Severity: Disaster
+Operational data: 2024-04-02 10:27:01 [ALERT] M.7 D.156 
+Original problem ID: 72518
+```
+
+But you can configure the format of an alert either in alert > Media.
+
+
 # Ref.
 ## USGS API DOC
 https://earthquake.usgs.gov/fdsnws/event/1/

@@ -145,7 +145,7 @@ pub async fn handle_call(stdt: String, endt: String, lg: f64, lt: f64, rd: i32, 
 		};
 		report_list.push(rep);
 		let _ = influxdb::Influxdb::dump_report(&inflx.clone(), report_list).await;
-	    generic::logthis(format!("Event recorded: M:{} D:{}", iterator.magnitude, iterator.distance).as_str(), "ALERT")
+	    generic::logthis(format!("Event recorded: M:{} D:{} @timestamp_str", iterator.magnitude, iterator.distance).as_str(), "ALERT")
 
 	}
 
