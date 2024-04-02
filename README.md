@@ -39,6 +39,7 @@ cargo run
 ## Details:
 ### InfluxDB 
 
+[Influx API Doc](https://docs.influxdata.com/influxdb/v2/api/#operation/PostQuery)
 Data stored as:
 ```rust
 pub struct Quake {
@@ -84,7 +85,6 @@ curl --request POST 'http://192.168.1.1:8086/api/v2/query?org=org.local' \
 |2023-10-11T18:45:41.506Z|21.3788|longitude|quake|green|6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
 |2023-10-11T18:45:41.506Z|4.30000019073486|magnitude|quake|green|6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
 |
-
 
 
 ### Grafana
