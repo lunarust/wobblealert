@@ -1,5 +1,6 @@
 /target
 /dist
 /template
+/.idea
 /src/config/Default.toml
 Cargo.lock
