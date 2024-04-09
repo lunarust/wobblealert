@@ -165,3 +165,4 @@ https://earthquake.usgs.gov/fdsnws/event/1/
 
 
 
+ {MyTemplate:log[/opt/mylog/logs/abc.log,server starting].nodata(10m)}=0
