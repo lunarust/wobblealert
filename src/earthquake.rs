@@ -5,6 +5,7 @@ use std::io::Write;
 use serde_json::{Result, Value};
 use geoutils::Location;
 use chrono::{DateTime, Utc};
+use futures::stream::iter;
 use serde::{Deserialize, Serialize};
 use crate::influxdb;
 use crate::settings;
@@ -114,7 +115,13 @@ pub async fn handle_call(stdt: String, endt: String, lg: f64, lt: f64, rd: i32, 
 	    let d = UNIX_EPOCH + Duration::from_secs(dt_nano_utc);
 	    let datetime = DateTime::<Utc>::from(d);
 	    let timestamp_str = datetime.format("%v %H:%M").to_string();
-    	let color = iterator.alert.clone();
+    	let mut color = iterator.alert.clone();
+		if iterator.magnitude < 4.0 {
+			color = "green".to_string();
+		}
+		else if iterator.magnitude < 5.0 { color = "yellow".to_string(); }
+		else if iterator.magnitude < 6.0 { color = "orange".to_string(); }
+		else { color = "red".to_string(); }
 
 		match color.as_str() {
 			"orange" => { i3_output = format!(r#"<span background="{}">"#, cfg.color.orange); },
@@ -150,7 +157,7 @@ pub async fn handle_call(stdt: String, endt: String, lg: f64, lt: f64, rd: i32, 
 	}
 
 	// pushing data to influxdb
-	let res = influxdb::Influxdb::dump(&inflx.clone(), quake_list).await;
+	let _res = influxdb::Influxdb::dump(&inflx.clone(), quake_list).await;
 	//println!("Pushing data... {:?}", res);
 
 
