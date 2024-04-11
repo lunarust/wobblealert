@@ -86,14 +86,14 @@ curl --request POST 'http://192.168.1.1:8086/api/v2/query?org=org.local' \
 |2023-10-11T18:45:41.506Z|4.30000019073486|magnitude|quake|green|6000lg5z|https://earthquake.usgs.gov/earthquakes/eventpage/us6000lg5z|
 |
 
-
+```influxql
 from(bucket: "wobbly")
 |>  range(start: 0, stop: now())  
 |> filter(fn: (r) => r["_measurement"] == "ready")
 |> filter(fn: (r) => r["_field"] == "result")
 |> sort(columns: ["_time"], desc: false)
 |> last()
-
+```
 
 
 ### Grafana
@@ -161,7 +161,7 @@ Severity: Disaster
 Operational data: 2024-04-02 10:27:01 [ALERT] M.7 D.156 
 Original problem ID: 72518
 ```
-
+still working on alerts / these are triggered but dont resolves themselves... yet
 But you can configure the format of an alert either in alert > Media.
 
 
@@ -174,4 +174,6 @@ https://earthquake.usgs.gov/fdsnws/event/1/
 
 
 
- {MyTemplate:log[/opt/mylog/logs/abc.log,server starting].nodata(10m)}=0
+
+
+[![Rust](https://github.com/lunarust/wobblealert/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/lunarust/wobblealert/actions/workflows/rust.yml)
