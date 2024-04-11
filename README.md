@@ -87,6 +87,15 @@ curl --request POST 'http://192.168.1.1:8086/api/v2/query?org=org.local' \
 |
 
 
+from(bucket: "wobbly")
+|>  range(start: 0, stop: now())  
+|> filter(fn: (r) => r["_measurement"] == "ready")
+|> filter(fn: (r) => r["_field"] == "result")
+|> sort(columns: ["_time"], desc: false)
+|> last()
+
+
+
 ### Grafana
 
 ![Grafana Earthquake Dashboard](./img/Grafana_Dasboard.png)

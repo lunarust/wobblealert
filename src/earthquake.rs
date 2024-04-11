@@ -157,11 +157,14 @@ pub async fn handle_call(stdt: String, endt: String, lg: f64, lt: f64, rd: i32, 
 	}
 	else {
 		let rep: influxdb::LastReport = influxdb::LastReport {
-			code: "null",
-			result: 0.0,
+			code: "Empty".to_string(),
+			result: 0.0 as u64,
 			time: timestamp_nanos as i64,
 		};
 		report_list.push(rep);
+		let _res = influxdb::Influxdb::dump_report(&inflx.clone(), report_list).await;
+		//println!("Pushing data... {:?}", res);
+
 	}
 
 	// pushing data to influxdb
