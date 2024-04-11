@@ -89,7 +89,8 @@ impl Influxdb {
 	    let mut iterator = LastEntry::default();
 
 	    if res.len() == 0 {
-	    	//println!("Set is empty:: {:?}", res.len());	    	
+	    	//println!("Set is empty:: {:?}", res.len());
+
 	    }	
 	    else {
 	    	//println!("I have an entry:: {:?}", res.len());
