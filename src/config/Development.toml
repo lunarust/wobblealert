@@ -11,12 +11,12 @@ latitude = "0.00"
 radius = "320"
 file = "/home/user/.config/i3/alert"
 
-[db]
-dburl="http://192.168.1.1:8086"
-dbport=8086
-dbapi="influxdb_api_key"
-dbname="wobbly"
-dborg="org"
+#[db]
+#dburl="http://192.168.1.1:8086"
+#dbport=8086
+#dbapi="influxdb_api_key"
+#dbname="wobbly"
+#dborg="org"
 
 [color]
 green="#00FF66"

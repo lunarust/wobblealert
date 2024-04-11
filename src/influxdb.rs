@@ -73,11 +73,11 @@ impl Influxdb {
 	    let client = Client::new(host, org, token);
 
     let qs = format!("from(bucket: \"{}\")
-        |> range(start: 0, stop: now())  
-        |> filter(fn: (r) => r[\"_measurement\"] == \"ready\")
-        |> filter(fn: (r) => r[\"_field\"] == \"result\")
+		|> range(start: 0, stop: now())
+		|> filter(fn: (r) => r[\"_measurement\"] == \"ready\")
 		|> sort(columns: [\"_time\"], desc: false)
-		|> last()      
+		|> group(columns: [\"_value\"])
+		|> last()
 		",
 		bucket);
 
@@ -88,13 +88,9 @@ impl Influxdb {
 	    	await.unwrap_or_default(); //unwrap_or(LastEntry::default());
 	    let mut iterator = LastEntry::default();
 
-	    if res.len() == 0 {
-	    	//println!("Set is empty:: {:?}", res.len());
-
-	    }	
-	    else {
+	    if res.len() != 0 {
 	    	//println!("I have an entry:: {:?}", res.len());
-			iterator = (res).iter().last().unwrap().clone();
+			iterator = (res).iter().next().unwrap().clone();
 	    }
 
 	    iterator.time
@@ -107,7 +103,8 @@ impl Influxdb {
 	    let token = &self.dbapi;
 	    let bucket = &self.dbname;
 	    let client = Client::new(host, org, token);
-	    println!("{:?}", le);
+	    //println!("{:?}", le);
+	    //println!("{:?}", le);
 
 	    client.write(bucket,  stream::iter(le)).await?;
 	    
