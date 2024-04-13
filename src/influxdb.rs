@@ -104,7 +104,7 @@ impl Influxdb {
 	    let bucket = &self.dbname;
 	    let client = Client::new(host, org, token);
 	    //println!("{:?}", le);
-	    //println!("{:?}", le);
+	    println!("{:?}", le);
 
 	    client.write(bucket,  stream::iter(le)).await?;
 	    
